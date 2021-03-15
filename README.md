@@ -4,12 +4,11 @@
 ## Output
 
 ```golang
-
 import (
-	"os"
-
+    "os"
+	
     "github.com/sirupsen/logrus"
-	"github.com/helmwave/logrus-emoji-formatter"
+    "github.com/helmwave/logrus-emoji-formatter"
 )
 
 func main() {
