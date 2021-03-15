@@ -1,4 +1,4 @@
-module github.com/helmwave/logrus-easy-formatter
+module github.com/helmwave/logrus-emoji-formatter
 
 go 1.16
 
