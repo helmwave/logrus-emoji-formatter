@@ -8,7 +8,7 @@
 import (
 	"os"
 
-	"github.com/sirupsen/logrus"
+    "github.com/sirupsen/logrus"
 	"github.com/helmwave/logrus-emoji-formatter"
 )
 
@@ -26,3 +26,7 @@ func main() {
 ```
 
 <img width="449" alt="image" src="https://user-images.githubusercontent.com/4854707/111171528-118e1b80-85b6-11eb-886b-241c2729224b.png">
+
+## Todo
+- [ ] add unit test
+- [ ] ci for tests
