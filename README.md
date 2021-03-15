@@ -13,9 +13,9 @@ import (
 )
 
 func main() {
-	log.SetFormatter(&formatter.Config{
-			Color: true,
-	})
+  log.SetFormatter(&formatter.Config{
+    Color: true,
+  })
   log.Info("🛠 Your planfile is .helmwave/planfile")
 
   log.WithFields(log.Fields{
