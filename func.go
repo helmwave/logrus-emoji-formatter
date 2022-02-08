@@ -43,7 +43,10 @@ func (f *Config) Format(entry *logrus.Entry) ([]byte, error) {
 	output = strings.Replace(output, "%time%", entry.Time.Format(timestampFormat), 1)
 	output = strings.Replace(output, "%msg%", m, 1)
 	output = strings.Replace(output, "%lvl%", l, 1)
-	output = strings.Replace(output, "%emoji%", emoji, 1)
+
+	if f.Emoji {
+		output = strings.Replace(output, "%emoji%", emoji, 1)
+	}
 
 	for k, val := range entry.Data {
 		switch val.(type) {
