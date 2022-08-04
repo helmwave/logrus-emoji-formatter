@@ -21,9 +21,9 @@ const (
 
 // Format building log message.
 func (f *Config) Format(entry *logrus.Entry) ([]byte, error) {
-	output := f.LogFormat
-	if output == "" {
-		output = defaultLogFormat
+	format := f.LogFormat
+	if format == "" {
+		format = defaultLogFormat
 	}
 
 	timestampFormat := f.TimestampFormat
@@ -45,10 +45,14 @@ func (f *Config) Format(entry *logrus.Entry) ([]byte, error) {
 		fieldPattern = start + logFieldColor + fieldPattern + end
 	}
 
-	output = strings.Replace(output, "%time%", entry.Time.Format(timestampFormat), 1)
-	output = strings.Replace(output, "%msg%", m, 1)
-	output = strings.Replace(output, "%lvl%", l, 1)
-	output = strings.Replace(output, "%emoji%", emoji, 1)
+	replacer := strings.NewReplacer(
+		"%time%", entry.Time.Format(timestampFormat),
+		"%msg%", m,
+		"%lvl%", l,
+		"%emoji%", emoji,
+	)
+
+	output := replacer.Replace(format)
 
 	for k, val := range entry.Data {
 		switch val := val.(type) {
