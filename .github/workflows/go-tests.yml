@@ -1,0 +1,43 @@
+name: Go Test
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "**.go"
+  push:
+    branches:
+      - main
+    paths:
+      - "**.go"
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Install go modules
+        run: go mod download
+
+      - name: Run tests
+        run: go test -race -coverprofile=./tests.cov -v -covermode=atomic ./...
+
+      - uses: codecov/codecov-action@v3.1.0
+        with:
+          files: ./tests.cov
+          fail_ci_if_error: true
