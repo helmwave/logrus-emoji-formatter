@@ -9,14 +9,15 @@ const (
 	defaultTimestampFormat = time.RFC3339
 )
 
-// Formatter implements logrus. Formatter interface.
+// Config is a logrus formatter.
 type Config struct {
-	// Timestamp format
+	// Timestamp format.
 	TimestampFormat string
-	// Available standard keys: time, msg, lvl
+	// LogFormat is a format string for log.
+	// Available standard keys: time, msg, lvl.
 	// Also can include custom fields but limited to strings.
-	// All of fields need to be wrapped inside %% i.e %time% %msg%
+	// All of fields need to be wrapped inside `%%` i.e `%time% %msg%`.
 	LogFormat string
-	//Color bool Maybe latter
+	// Color enables colors output.
 	Color bool
 }
