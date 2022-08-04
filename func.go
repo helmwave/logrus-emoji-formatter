@@ -2,17 +2,22 @@ package formatter
 
 import (
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
-var emojisLevel = [7]string{"💀", "🤬", "💩", "🙈", "🙃", "🤷", "🤮"}
-var colors = [7]string{"[44;1m", "[31;1m", "[31;1m", "[33m", "[36m", "[37;1m", "[35;1m"}
+//nolint:gochecknoglobals // used as constants
+var (
+	emojisLevel = [7]string{"💀", "🤬", "💩", "🙈", "🙃", "🤷", "🤮"}
+	colors      = [7]string{"[44;1m", "[31;1m", "[31;1m", "[33m", "[36m", "[37;1m", "[35;1m"}
+)
 
-const LogFieldColor = "[35;1m"
-
-const Start = "\033"
-const End = Start + "[0m"
+const (
+	logFieldColor = "[35;1m"
+	start         = "\033"
+	end           = start + "[0m"
+)
 
 // Format building log message.
 func (f *Config) Format(entry *logrus.Entry) ([]byte, error) {
@@ -35,9 +40,9 @@ func (f *Config) Format(entry *logrus.Entry) ([]byte, error) {
 	fieldPattern := "%s"
 	if f.Color {
 		color := colors[i]
-		l = Start + color + level + End
-		m = Start + color + entry.Message + End
-		fieldPattern = Start + LogFieldColor + fieldPattern + End
+		l = start + color + level + end
+		m = start + color + entry.Message + end
+		fieldPattern = start + logFieldColor + fieldPattern + end
 	}
 
 	output = strings.Replace(output, "%time%", entry.Time.Format(timestampFormat), 1)
@@ -46,17 +51,15 @@ func (f *Config) Format(entry *logrus.Entry) ([]byte, error) {
 	output = strings.Replace(output, "%emoji%", emoji, 1)
 
 	for k, val := range entry.Data {
-		switch val.(type) {
+		switch val := val.(type) {
 		case []string:
-			v := strings.Join(val.([]string), "\n\t  - ")
+			v := strings.Join(val, "\n\t  - ")
 			output += fmt.Sprintf("\n\t"+fieldPattern+": \n\t  - %v", k, v)
 		default:
 			output += fmt.Sprintf("\n\t"+fieldPattern+": %v", k, val)
 		}
-		//strings.Join(s, ", "
-		//output += fmt.Sprintf("\n\t%s: %v", k, val)
-		//output = strings.Replace(output, "%"+k+"%", s, 1)
 	}
 	output += "\n"
+
 	return []byte(output), nil
 }
